@@ -1,7 +1,6 @@
 import SettingsIcon from '@mui/icons-material/Settings';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
-import { File, Folder } from '../types';
 
 export default function Navbar() {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

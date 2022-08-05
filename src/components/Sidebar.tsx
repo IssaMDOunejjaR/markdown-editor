@@ -127,26 +127,35 @@ export default function Sidebar() {
 				folders.filter((folder) => folder.id !== '000000') || []
 			);
 		} else {
-			setFilesWithNoFolders(
-				folders
-					.find((folder) => folder.id === '000000')
-					?.files.filter((file) => file.name.includes(searchValue)) ||
-					[]
+			const defaultFolder = folders.find(
+				(folder) => folder.id === '000000'
 			);
+			const foldersWithoutDefault = folders.filter(
+				(folder) => folder.id !== '000000'
+			);
+
+			setFilesWithNoFolders(
+				defaultFolder?.files.filter(
+					(file) =>
+						file.name.includes(searchValue) &&
+						file.tags.filter((tag) => tags.find((t) => tag === t))
+							.length
+				) || []
+			);
+
 			setAllFolders(
-				folders
-					.filter((folder) => folder.id !== '000000')
-					.filter(
-						(folder) =>
-							folder.name.includes(searchValue) ||
-							(folder.files.filter((file) =>
-								file.name.includes(searchValue)
-							).length > 0
-								? folder.files.filter((file) =>
-										file.name.includes(searchValue)
-								  )
-								: false)
-					) || []
+				foldersWithoutDefault.filter(
+					(folder) =>
+						(tags.length === 0 &&
+							folder.name.includes(searchValue)) ||
+						folder.files.filter(
+							(file) =>
+								file.name.includes(searchValue) &&
+								file.tags.filter((tag) =>
+									tags.find((t) => tag === t)
+								).length
+						).length
+				)
 			);
 		}
 	}, [folders, searchValue, tags]);
